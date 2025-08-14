@@ -1,4 +1,4 @@
-package apidump
+7package apidump
 
 import (
 	"context"
@@ -308,33 +308,13 @@ func (args *Args) lint() {
 		*argsPtr, modified = removeEmptyStrings(*argsPtr)
 		if modified {
 			printer.Stderr.Warningf("Ignoring empty regex in %s, which would otherwise exclude everything\n", paramName)
-		}
-	}
-
-	// Empty path/host-inclusion regular expressions will include everything. If
-	// there are any non-empty regular expressions, ignore the empty regexes and
-	// print a warning.
-	for paramName, argsPtr := range map[string]*[]string{
-		"--path-allow": &args.PathAllowlist,
-		"--host-allow": &args.HostAllowlist,
-	} {
-		modified := false
+		
 		*argsPtr, modified = removeEmptyStrings(*argsPtr)
-		if modified && len(*argsPtr) > 0 {
-			printer.Stderr.Warningf("Ignoring empty regex in %s, which would otherwise include everything\n", paramName)
-		}
-	}
-}
-
-// args.Tags may be initialized via the command line, but automated settings
-// are mainly performed here (for now.)
+		if modified && len(*argsPtr)
 func collectTraceTags(args *Args) map[tags.Key]string {
 	traceTags := args.Tags
 	if traceTags == nil {
 		traceTags = map[tags.Key]string{}
-	}
-	// Store the current packet capture flags so we can reuse them in active
-	// learning.
 	if len(args.Interfaces) > 0 {
 		traceTags[tags.XAkitaDumpInterfacesFlag] = strings.Join(args.Interfaces, ",")
 	}
